@@ -1,4 +1,4 @@
-// Generated from /home/etud/o2171270/M2/Analyse_Statique/test/WhileMCA/src/g.g4 by ANTLR 4.9.2
+// Generated from D:/Documents/Programmation/Java/WhileMCA/src\g.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -64,11 +64,40 @@ public interface gVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatements(gParser.StatementsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link gParser#statement}.
+	 * Visit a parse tree produced by the {@code SkipStat}
+	 * labeled alternative in {@link gParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatement(gParser.StatementContext ctx);
+	T visitSkipStat(gParser.SkipStatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AssignStat}
+	 * labeled alternative in {@link gParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignStat(gParser.AssignStatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IfStat}
+	 * labeled alternative in {@link gParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStat(gParser.IfStatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileStat}
+	 * labeled alternative in {@link gParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileStat(gParser.WhileStatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code CallStat}
+	 * labeled alternative in {@link gParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCallStat(gParser.CallStatContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link gParser#lAexpression}.
 	 * @param ctx the parse tree
@@ -76,27 +105,87 @@ public interface gVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLAexpression(gParser.LAexpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link gParser#aexpression}.
+	 * Visit a parse tree produced by the {@code IdentExpr}
+	 * labeled alternative in {@link gParser#aexpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAexpression(gParser.AexpressionContext ctx);
+	T visitIdentExpr(gParser.IdentExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link gParser#opa}.
+	 * Visit a parse tree produced by the {@code ConstExpr}
+	 * labeled alternative in {@link gParser#aexpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOpa(gParser.OpaContext ctx);
+	T visitConstExpr(gParser.ConstExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link gParser#bexpression}.
+	 * Visit a parse tree produced by the {@code NegatExpr}
+	 * labeled alternative in {@link gParser#aexpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBexpression(gParser.BexpressionContext ctx);
+	T visitNegatExpr(gParser.NegatExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link gParser#opr}.
+	 * Visit a parse tree produced by the {@code ParentExpr}
+	 * labeled alternative in {@link gParser#aexpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOpr(gParser.OprContext ctx);
+	T visitParentExpr(gParser.ParentExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code CompaExpr}
+	 * labeled alternative in {@link gParser#aexpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompaExpr(gParser.CompaExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code OperatorNum}
+	 * labeled alternative in {@link gParser#opa}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperatorNum(gParser.OperatorNumContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code TrueExpr}
+	 * labeled alternative in {@link gParser#bexpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrueExpr(gParser.TrueExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FalseExpr}
+	 * labeled alternative in {@link gParser#bexpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFalseExpr(gParser.FalseExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code CompExpr}
+	 * labeled alternative in {@link gParser#bexpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompExpr(gParser.CompExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotExpr}
+	 * labeled alternative in {@link gParser#bexpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotExpr(gParser.NotExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ParenthesisExpr}
+	 * labeled alternative in {@link gParser#bexpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenthesisExpr(gParser.ParenthesisExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code OperatorCompa}
+	 * labeled alternative in {@link gParser#opr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperatorCompa(gParser.OperatorCompaContext ctx);
 }
