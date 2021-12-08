@@ -1,4 +1,4 @@
-program p3
+program
 proc fib(int z, int u, res int v)
 begin
 if z < 3 then v := u+1
