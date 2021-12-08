@@ -1,4 +1,4 @@
-// Generated from g.g4 by ANTLR 4.9
+// Generated from /home/etud/o2171270/M2/Analyse_Statique/test/WhileMCA/src/g.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class gParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.9", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -130,6 +130,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitProgram(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -214,6 +219,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitDeclaration(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -291,6 +301,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitLDeclIdent(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitLDeclIdent(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LDeclIdentContext lDeclIdent() throws RecognitionException {
@@ -359,6 +374,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitLDeclVariables(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitLDeclVariables(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LDeclVariablesContext lDeclVariables() throws RecognitionException {
@@ -418,6 +438,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitDeclVariables(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitDeclVariables(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DeclVariablesContext declVariables() throws RecognitionException {
@@ -461,6 +486,11 @@ public class gParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitLIdentifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitLIdentifier(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -515,6 +545,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitType(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TypeContext type() throws RecognitionException {
@@ -565,6 +600,11 @@ public class gParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitBlock(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitBlock(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -633,6 +673,11 @@ public class gParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitStatements(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitStatements(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -704,6 +749,11 @@ public class gParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -819,6 +869,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitLAexpression(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitLAexpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LAexpressionContext lAexpression() throws RecognitionException {
@@ -882,6 +937,11 @@ public class gParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitAexpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitAexpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -987,6 +1047,11 @@ public class gParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitOpa(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitOpa(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OpaContext opa() throws RecognitionException {
@@ -1043,6 +1108,11 @@ public class gParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitBexpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitBexpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1123,6 +1193,11 @@ public class gParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof gListener ) ((gListener)listener).exitOpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitOpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
