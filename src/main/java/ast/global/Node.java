@@ -1,7 +1,10 @@
 package ast.global;
 
 import ast.IVisitor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 public abstract class Node {
     protected Position position;
 

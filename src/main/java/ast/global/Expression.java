@@ -1,4 +1,8 @@
 package ast.global;
 
-public class Expression {
+public abstract class Expression extends Node {
+
+    public Expression(Position position) {
+        super(position);
+    }
 }

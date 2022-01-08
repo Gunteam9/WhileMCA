@@ -2,11 +2,10 @@ package ast;
 
 import antlr.gBaseVisitor;
 import antlr.gParser;
-import ast.global.Declaration;
-import ast.global.Expression;
-import ast.global.Node;
-import ast.global.Position;
-import ast.statement.Statement;
+import ast.aexpr.*;
+import ast.bexpr.*;
+import ast.global.*;
+import ast.statement.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -34,12 +33,15 @@ public class ASTBuilder extends gBaseVisitor<Node> {
         List<Declaration> declarations = makeList(ctx.declaration());
         List<Statement> statements = makeList(ctx.statements().statements());
 
-        return super.visitProgram(ctx);
+        return new Program(position(ctx), declarations, statements);
     }
 
     @Override
     public Node visitDeclaration(gParser.DeclarationContext ctx) {
-        return super.visitDeclaration(ctx);
+        ListDeclIdent listDeclIdent = (ListDeclIdent) ctx.lDeclIdent().accept(this);
+        List<Statement> statements = makeList(ctx.statements().statements());
+
+        return new Declaration(position(ctx), listDeclIdent, statements);
     }
 
     @Override
@@ -49,157 +51,184 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 
     @Override
     public Node visitLDeclVariables(gParser.LDeclVariablesContext ctx) {
-        return super.visitLDeclVariables(ctx);
+        DeclVariables declVariables = (DeclVariables) ctx.declVariables().accept(this);
+        List<ListDeclVariables> listDeclVariables = makeList(ctx.lDeclVariables());
+
+        return new ListDeclVariables(position(ctx), declVariables, listDeclVariables);
     }
 
     @Override
     public Node visitDeclVariables(gParser.DeclVariablesContext ctx) {
-        return super.visitDeclVariables(ctx);
+        Type type = (Type) ctx.type().accept(this);
+        ListIdentifier listIdentifier = (ListIdentifier) ctx.lIdentifier().accept(this);
+
+        return new DeclVariables(position(ctx), type, listIdentifier);
     }
 
     @Override
     public Node visitLIdentifier(gParser.LIdentifierContext ctx) {
-        return super.visitLIdentifier(ctx);
+        String identifier = ctx.getText();
+
+        return new ListIdentifier(position(ctx), identifier);
     }
 
     @Override
     public Node visitTypeInteger(gParser.TypeIntegerContext ctx) {
-        return super.visitTypeInteger(ctx);
+        return new TypeInteger(position(ctx));
     }
 
     @Override
     public Node visitTypeBoolean(gParser.TypeBooleanContext ctx) {
-        return super.visitTypeBoolean(ctx);
+        return new TypeBoolean(position(ctx));
     }
 
     @Override
     public Node visitBlockStat(gParser.BlockStatContext ctx) {
-        return super.visitBlockStat(ctx);
+        Statement statement = (Statement) ctx.statement().accept(this);
+
+        return new BlockStat(position(ctx), statement);
     }
 
     @Override
     public Node visitBlockParentStat(gParser.BlockParentStatContext ctx) {
-        return super.visitBlockParentStat(ctx);
+        Statement statement = (Statement) ctx.statements().statement().accept(this);
+        List<Statement> statements = makeList(ctx.statements().statements());
+
+        return new BlockParentStat(position(ctx), statement, statements);
     }
 
     @Override
     public Node visitStatements(gParser.StatementsContext ctx) {
-        return super.visitStatements(ctx);
+        throw new RuntimeException("Statements list shouldn't be visited");
     }
 
     @Override
     public Node visitSkipStat(gParser.SkipStatContext ctx) {
-        return super.visitSkipStat(ctx);
+        return new SkipStat(position(ctx));
     }
 
     @Override
     public Node visitAssignStat(gParser.AssignStatContext ctx) {
-        return super.visitAssignStat(ctx);
+        Expression expression = (Expression) ctx.aexpression().accept(this);
+        String identifier = ctx.Identifier().getSymbol().getText();
+
+        return new AssignStat(position(ctx), expression, identifier);
     }
 
     @Override
     public Node visitIfStat(gParser.IfStatContext ctx) {
-        return super.visitIfStat(ctx);
+        Expression expression = (Expression) ctx.bexpression().accept(this);
+        Statement statement = (Statement) ctx.thenblock.accept(this);
+        List<Statement> statements = makeList(ctx.block());
+
+        return new IfStat(position(ctx), expression, statement, statements);
     }
 
     @Override
     public Node visitWhileStat(gParser.WhileStatContext ctx) {
-        return super.visitWhileStat(ctx);
+        Expression expression = (Expression) ctx.bexpression().accept(this);
+        Statement statement = (Statement) ctx.block().accept(this);
+
+        return new WhileStat(position(ctx), expression, statement);
     }
 
     @Override
     public Node visitCallStat(gParser.CallStatContext ctx) {
-        return super.visitCallStat(ctx);
+        String identifier = ctx.Identifier().getSymbol().getText();
+        Expression expression = (Expression) ctx.lAexpression().accept(this);
+
+        return new CallStat(position(ctx), identifier, expression);
     }
 
     @Override
     public Node visitListAExpr(gParser.ListAExprContext ctx) {
-        return super.visitListAExpr(ctx);
+        List<Expression> expressions = makeList(ctx.aexpression());
+
+        return new ListAExpr(position(ctx), expressions);
     }
 
     @Override
     public Node visitIdentExpr(gParser.IdentExprContext ctx) {
-        return super.visitIdentExpr(ctx);
+        String identifier = ctx.Identifier().getSymbol().getText();
+
+        return new IdentExpr(position(ctx), identifier);
     }
 
     @Override
     public Node visitConstExpr(gParser.ConstExprContext ctx) {
-        return super.visitConstExpr(ctx);
+        String constant = ctx.Constant().getSymbol().getText();
+
+        return new ConstExpr(position(ctx), constant);
     }
 
     @Override
     public Node visitNegatExpr(gParser.NegatExprContext ctx) {
-        return super.visitNegatExpr(ctx);
+        Expression expression = (Expression) ctx.aexpression().accept(this);
+
+        return new NegatExpr(position(ctx), expression);
     }
 
     @Override
     public Node visitParentExpr(gParser.ParentExprContext ctx) {
-        return super.visitParentExpr(ctx);
+        Expression expression = (Expression) ctx.aexpression().accept(this);
+
+        return new ParentExpr(position(ctx), expression);
     }
 
     @Override
     public Node visitCompaExpr(gParser.CompaExprContext ctx) {
-        return super.visitCompaExpr(ctx);
+        Expression leftExpression = (Expression) ctx.leftexpr.accept(this);
+        Expression rightExpression = (Expression) ctx.rigthexpr.accept(this);
+        List<Expression> expressions = makeList(ctx.aexpression());
+
+        return new CompaExpr(position(ctx), leftExpression, rightExpression, expressions);
     }
 
     @Override
-    public Object visitOperatorNum(gParser.OperatorNumContext ctx) {
-        return super.visitOperatorNum(ctx);
+    public Node visitOperatorNum(gParser.OperatorNumContext ctx) {
+        String operator = ctx.op.getText();
+
+        return new OperatorNum(position(ctx), operator);
     }
 
     @Override
     public Node visitTrueExpr(gParser.TrueExprContext ctx) {
-        return super.visitTrueExpr(ctx);
+        return new TrueExpr(position(ctx));
     }
 
     @Override
     public Node visitFalseExpr(gParser.FalseExprContext ctx) {
-        return super.visitFalseExpr(ctx);
+        return new FalseExpr(position(ctx));
     }
 
     @Override
     public Node visitCompExpr(gParser.CompExprContext ctx) {
-        return super.visitCompExpr(ctx);
+        Expression leftExpression = (Expression) ctx.leftexpr.accept(this);
+        Expression rightExpression = (Expression) ctx.rightexpr.accept(this);
+        List<Expression> expressions = makeList(ctx.aexpression());
+
+        return new CompExpr(position(ctx), leftExpression, rightExpression, expressions);
     }
 
     @Override
     public Node visitNotExpr(gParser.NotExprContext ctx) {
-        return super.visitNotExpr(ctx);
+        Expression expression = (Expression) ctx.bexpression().accept(this);
+
+        return new NotExpr(position(ctx), expression);
     }
 
     @Override
     public Node visitParenthesisExpr(gParser.ParenthesisExprContext ctx) {
-        return super.visitParenthesisExpr(ctx);
+        Expression expression = (Expression) ctx.bexpression().accept(this);
+
+        return new ParenthesisExpr(position(ctx), expression);
     }
 
     @Override
     public Node visitOperatorCompa(gParser.OperatorCompaContext ctx) {
-        return super.visitOperatorCompa(ctx);
-    }
+        String operator = ctx.op.getText();
 
-    @Override
-    public Node visit(ParseTree tree) {
-        return super.visit(tree);
-    }
-
-    @Override
-    public Node visitChildren(RuleNode node) {
-        return super.visitChildren(node);
-    }
-
-    @Override
-    public Node visitTerminal(TerminalNode node) {
-        return super.visitTerminal(node);
-    }
-
-    @Override
-    public Node visitErrorNode(ErrorNode node) {
-        return super.visitErrorNode(node);
-    }
-
-    @Override
-    protected Node defaultResult() {
-        return super.defaultResult();
+        return new OperatorCompa(position(ctx), operator);
     }
 
 //    @Override
@@ -212,28 +241,4 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 //        return super.shouldVisitNextChild(node, currentResult);
 //    }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-    }
 }
