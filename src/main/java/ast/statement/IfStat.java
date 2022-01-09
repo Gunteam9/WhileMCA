@@ -10,14 +10,14 @@ import java.util.List;
 @Getter
 public class IfStat extends Statement {
     private Expression expression;
-    private Statement statement;
-    private List<Statement> statements;
+    private Statement thenBlock;
+    private Statement elseBLock;
 
-    public IfStat(Position position, Expression expression, Statement statement, List<Statement> statements) {
+    public IfStat(Position position, Expression expression, Statement thenBlock, Statement elseBLock) {
         super(position);
         this.expression = expression;
-        this.statement = statement;
-        this.statements = statements;
+        this.thenBlock = thenBlock;
+        this.elseBLock = elseBLock;
     }
 
     @Override

@@ -11,6 +11,7 @@ public interface IVisitor<T> {
     T visit(IdentExpr identExpr);
     T visit(ListAExpr listAExpr);
     T visit(ParentExpr parentExpr);
+    T visit(Opa opa);
 
     T visit(CompExpr compExpr);
     T visit(FalseExpr falseExpr);
@@ -19,6 +20,7 @@ public interface IVisitor<T> {
     T visit(OperatorNum operatorNum);
     T visit(ParenthesisExpr parenthesisExpr);
     T visit(TrueExpr trueExpr);
+    T visit(Opr opr);
 
     T visit(Declaration declaration);
     T visit(DeclVariables declVariables);
@@ -37,7 +39,7 @@ public interface IVisitor<T> {
     T visit(CallStat callStat);
     T visit(IfStat ifStat);
     T visit(SkipStat skipStat);
-    //T visit(Statement statement);
+    T visit(Statements statements);
     T visit(WhileStat whileStat);
 
 }

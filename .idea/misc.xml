@@ -26,7 +26,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/main/g.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\Documents\Programmation\Java\WhileMCA\src\main\java" />
+          <option name="outputDir" value="C:\Users\romai\Documents\Programmation\Java\WhileMCA\src\main\java" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="antlr" />

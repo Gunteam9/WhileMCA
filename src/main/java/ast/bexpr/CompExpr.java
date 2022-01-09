@@ -10,14 +10,14 @@ import java.util.List;
 @Getter
 public class CompExpr extends Expression {
     private Expression leftExpression;
+    private Opr opr;
     private Expression rightExpression;
-    private List<Expression> expressions;
 
-    public CompExpr(Position position, Expression leftExpression, Expression rightExpression, List<Expression> expressions) {
+    public CompExpr(Position position, Expression leftExpression, Opr opr, Expression rightExpression) {
         super(position);
         this.leftExpression = leftExpression;
+        this.opr = opr;
         this.rightExpression = rightExpression;
-        this.expressions = expressions;
     }
 
     @Override

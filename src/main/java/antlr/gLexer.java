@@ -1,4 +1,4 @@
-// Generated from D:/Documents/Programmation/Java/WhileMCA/src/main\g.g4 by ANTLR 4.9.2
+// Generated from C:/Users/romai/Documents/Programmation/Java/WhileMCA/src/main\g.g4 by ANTLR 4.9.2
 package antlr;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

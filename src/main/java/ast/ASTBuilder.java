@@ -7,13 +7,10 @@ import ast.bexpr.*;
 import ast.global.*;
 import ast.statement.*;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ASTBuilder extends gBaseVisitor<Node> {
 
@@ -30,23 +27,32 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 
     @Override
     public Node visitProgram(gParser.ProgramContext ctx) {
+        String identifier = ctx.Identifier().getSymbol().getText();
         List<Declaration> declarations = makeList(ctx.declaration());
-        List<Statement> statements = makeList(ctx.statements().statements());
+        ListDeclVariables listDeclVariables = (ListDeclVariables) ctx.lDeclVariables().accept(this);
+        Statements statements = (Statements) ctx.statements().accept(this);
+        String eof = ctx.EOF().getSymbol().getText();
 
-        return new Program(position(ctx), declarations, statements);
+        return new Program(position(ctx), identifier, declarations, listDeclVariables, statements, eof);
     }
 
     @Override
     public Node visitDeclaration(gParser.DeclarationContext ctx) {
+        String procIdent = ctx.procIden.getText();
         ListDeclIdent listDeclIdent = (ListDeclIdent) ctx.lDeclIdent().accept(this);
-        List<Statement> statements = makeList(ctx.statements().statements());
+        Type type = (Type) ctx.type().accept(this);
+        String resIdent = ctx.resIdent.getText();
+        Statements statements = (Statements) ctx.statements().accept(this);
 
-        return new Declaration(position(ctx), listDeclIdent, statements);
+        return new Declaration(position(ctx), procIdent, listDeclIdent, type, resIdent, statements);
     }
 
     @Override
     public Node visitLDeclIdent(gParser.LDeclIdentContext ctx) {
-        return super.visitLDeclIdent(ctx);
+        List<Type> types = makeList(ctx.type());
+        List<String> identifiers = ctx.Identifier().stream().map(o -> o.getSymbol().getText()).toList();
+
+        return new ListDeclIdent(position(ctx), types, identifiers);
     }
 
     @Override
@@ -67,9 +73,9 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 
     @Override
     public Node visitLIdentifier(gParser.LIdentifierContext ctx) {
-        String identifier = ctx.getText();
+        List<String> identifiers = ctx.Identifier().stream().map(o -> o.getSymbol().getText()).toList();
 
-        return new ListIdentifier(position(ctx), identifier);
+        return new ListIdentifier(position(ctx), identifiers);
     }
 
     @Override
@@ -91,15 +97,17 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 
     @Override
     public Node visitBlockParentStat(gParser.BlockParentStatContext ctx) {
-        Statement statement = (Statement) ctx.statements().statement().accept(this);
-        List<Statement> statements = makeList(ctx.statements().statements());
+        Statements statements = (Statements) ctx.statements().accept(this);
 
-        return new BlockParentStat(position(ctx), statement, statements);
+        return new BlockParentStat(position(ctx), statements);
     }
 
     @Override
-    public Node visitStatements(gParser.StatementsContext ctx) {
-        throw new RuntimeException("Statements list shouldn't be visited");
+    public Node visitListStatement(gParser.ListStatementContext ctx) {
+        Statement statement = (Statement) ctx.statement().accept(this);
+        List<Statements> statements = makeList(ctx.statements());
+
+        return new Statements(position(ctx), statement, statements);
     }
 
     @Override
@@ -109,8 +117,8 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 
     @Override
     public Node visitAssignStat(gParser.AssignStatContext ctx) {
-        Expression expression = (Expression) ctx.aexpression().accept(this);
         String identifier = ctx.Identifier().getSymbol().getText();
+        Expression expression = (Expression) ctx.aexpression().accept(this);
 
         return new AssignStat(position(ctx), expression, identifier);
     }
@@ -118,10 +126,10 @@ public class ASTBuilder extends gBaseVisitor<Node> {
     @Override
     public Node visitIfStat(gParser.IfStatContext ctx) {
         Expression expression = (Expression) ctx.bexpression().accept(this);
-        Statement statement = (Statement) ctx.thenblock.accept(this);
-        List<Statement> statements = makeList(ctx.block());
+        Statement thenBlock = (Statement) ctx.thenBlock.accept(this);
+        Statement elseBlock = (Statement) ctx.elseBlock.accept(this);
 
-        return new IfStat(position(ctx), expression, statement, statements);
+        return new IfStat(position(ctx), expression, thenBlock, elseBlock);
     }
 
     @Override
@@ -162,6 +170,15 @@ public class ASTBuilder extends gBaseVisitor<Node> {
     }
 
     @Override
+    public Node visitCompaExpr(gParser.CompaExprContext ctx) {
+        Expression leftExpression = (Expression) ctx.leftexpr.accept(this);
+        Opa opa = (Opa) ctx.opa().accept(this);
+        Expression rightExpression = (Expression) ctx.rigthexpr.accept(this);
+
+        return new CompaExpr(position(ctx), leftExpression, opa, rightExpression);
+    }
+
+    @Override
     public Node visitNegatExpr(gParser.NegatExprContext ctx) {
         Expression expression = (Expression) ctx.aexpression().accept(this);
 
@@ -173,15 +190,6 @@ public class ASTBuilder extends gBaseVisitor<Node> {
         Expression expression = (Expression) ctx.aexpression().accept(this);
 
         return new ParentExpr(position(ctx), expression);
-    }
-
-    @Override
-    public Node visitCompaExpr(gParser.CompaExprContext ctx) {
-        Expression leftExpression = (Expression) ctx.leftexpr.accept(this);
-        Expression rightExpression = (Expression) ctx.rigthexpr.accept(this);
-        List<Expression> expressions = makeList(ctx.aexpression());
-
-        return new CompaExpr(position(ctx), leftExpression, rightExpression, expressions);
     }
 
     @Override
@@ -204,10 +212,10 @@ public class ASTBuilder extends gBaseVisitor<Node> {
     @Override
     public Node visitCompExpr(gParser.CompExprContext ctx) {
         Expression leftExpression = (Expression) ctx.leftexpr.accept(this);
+        Opr opr = (Opr) ctx.opr().accept(this);
         Expression rightExpression = (Expression) ctx.rightexpr.accept(this);
-        List<Expression> expressions = makeList(ctx.aexpression());
 
-        return new CompExpr(position(ctx), leftExpression, rightExpression, expressions);
+        return new CompExpr(position(ctx), leftExpression, opr, rightExpression);
     }
 
     @Override
@@ -230,15 +238,5 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 
         return new OperatorCompa(position(ctx), operator);
     }
-
-//    @Override
-//    protected Object aggregateResult(Object aggregate, Object nextResult) {
-//        return super.aggregateResult(aggregate, nextResult);
-//    }
-//
-//    @Override
-//    protected boolean shouldVisitNextChild(RuleNode node, Object currentResult) {
-//        return super.shouldVisitNextChild(node, currentResult);
-//    }
 
 }

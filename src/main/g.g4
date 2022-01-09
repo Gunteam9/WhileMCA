@@ -1,6 +1,6 @@
 grammar g;
 program: 'program' (Identifier)? declaration* 'begin' lDeclVariables statements 'end' EOF;
-declaration: 'proc' Identifier '(' lDeclIdent (',' 'res' type Identifier)? ')' 'begin' statements 'end';
+declaration: 'proc' procIden=Identifier '(' lDeclIdent (',' 'res' type resIdent=Identifier)? ')' 'begin' statements 'end';
 lDeclIdent: type Identifier (',' type Identifier)*;
 lDeclVariables: declVariables lDeclVariables*;
 declVariables: type lIdentifier';';
@@ -11,10 +11,10 @@ type: 'int'                                                                     
 block: statement                                                                     #BlockStat
     | '(' statements ')'                                                             #BlockParentStat
     ;
-statements: statement (';' statements)*;
+statements: statement (';' statements)*                                              #ListStatement;
 statement: 'skip'                                                                    #SkipStat
         | Identifier ':=' aexpression                                                #AssignStat
-        | 'if' bexpression 'then' thenblock=block ('else' block)?                    #IfStat
+        | 'if' bexpression 'then' thenBlock=block ('else' elseBlock=block)?          #IfStat
         | 'while' bexpression 'do' block                                             #WhileStat
         | 'call' Identifier '(' lAexpression ')'                                     #CallStat
         ;

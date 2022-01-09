@@ -1,4 +1,4 @@
-// Generated from D:/Documents/Programmation/Java/WhileMCA/src/main\g.g4 by ANTLR 4.9.2
+// Generated from C:/Users/romai/Documents/Programmation/Java/WhileMCA/src/main\g.g4 by ANTLR 4.9.2
 package antlr;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -116,15 +116,17 @@ public interface gListener extends ParseTreeListener {
 	 */
 	void exitBlockParentStat(gParser.BlockParentStatContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link gParser#statements}.
+	 * Enter a parse tree produced by the {@code ListStatement}
+	 * labeled alternative in {@link gParser#statements}.
 	 * @param ctx the parse tree
 	 */
-	void enterStatements(gParser.StatementsContext ctx);
+	void enterListStatement(gParser.ListStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link gParser#statements}.
+	 * Exit a parse tree produced by the {@code ListStatement}
+	 * labeled alternative in {@link gParser#statements}.
 	 * @param ctx the parse tree
 	 */
-	void exitStatements(gParser.StatementsContext ctx);
+	void exitListStatement(gParser.ListStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code SkipStat}
 	 * labeled alternative in {@link gParser#statement}.

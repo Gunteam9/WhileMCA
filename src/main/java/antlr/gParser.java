@@ -1,4 +1,4 @@
-// Generated from D:/Documents/Programmation/Java/WhileMCA/src/main\g.g4 by ANTLR 4.9.2
+// Generated from C:/Users/romai/Documents/Programmation/Java/WhileMCA/src/main\g.g4 by ANTLR 4.9.2
 package antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -195,15 +195,17 @@ public class gParser extends Parser {
 	}
 
 	public static class DeclarationContext extends ParserRuleContext {
-		public List<TerminalNode> Identifier() { return getTokens(gParser.Identifier); }
-		public TerminalNode Identifier(int i) {
-			return getToken(gParser.Identifier, i);
-		}
+		public Token procIden;
+		public Token resIdent;
 		public LDeclIdentContext lDeclIdent() {
 			return getRuleContext(LDeclIdentContext.class,0);
 		}
 		public StatementsContext statements() {
 			return getRuleContext(StatementsContext.class,0);
+		}
+		public List<TerminalNode> Identifier() { return getTokens(gParser.Identifier); }
+		public TerminalNode Identifier(int i) {
+			return getToken(gParser.Identifier, i);
 		}
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
@@ -237,7 +239,7 @@ public class gParser extends Parser {
 			setState(46);
 			match(T__3);
 			setState(47);
-			match(Identifier);
+			((DeclarationContext)_localctx).procIden = match(Identifier);
 			setState(48);
 			match(T__4);
 			setState(49);
@@ -254,7 +256,7 @@ public class gParser extends Parser {
 				setState(52);
 				type();
 				setState(53);
-				match(Identifier);
+				((DeclarationContext)_localctx).resIdent = match(Identifier);
 				}
 			}
 
@@ -712,6 +714,17 @@ public class gParser extends Parser {
 	}
 
 	public static class StatementsContext extends ParserRuleContext {
+		public StatementsContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_statements; }
+	 
+		public StatementsContext() { }
+		public void copyFrom(StatementsContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class ListStatementContext extends StatementsContext {
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
 		}
@@ -721,21 +734,18 @@ public class gParser extends Parser {
 		public StatementsContext statements(int i) {
 			return getRuleContext(StatementsContext.class,i);
 		}
-		public StatementsContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_statements; }
+		public ListStatementContext(StatementsContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof gListener ) ((gListener)listener).enterStatements(this);
+			if ( listener instanceof gListener ) ((gListener)listener).enterListStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof gListener ) ((gListener)listener).exitStatements(this);
+			if ( listener instanceof gListener ) ((gListener)listener).exitListStatement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitStatements(this);
+			if ( visitor instanceof gVisitor ) return ((gVisitor<? extends T>)visitor).visitListStatement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -745,6 +755,7 @@ public class gParser extends Parser {
 		enterRule(_localctx, 16, RULE_statements);
 		try {
 			int _alt;
+			_localctx = new ListStatementContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(103);
@@ -812,7 +823,8 @@ public class gParser extends Parser {
 		}
 	}
 	public static class IfStatContext extends StatementContext {
-		public BlockContext thenblock;
+		public BlockContext thenBlock;
+		public BlockContext elseBlock;
 		public BexpressionContext bexpression() {
 			return getRuleContext(BexpressionContext.class,0);
 		}
@@ -934,7 +946,7 @@ public class gParser extends Parser {
 				setState(117);
 				match(T__14);
 				setState(118);
-				((IfStatContext)_localctx).thenblock = block();
+				((IfStatContext)_localctx).thenBlock = block();
 				setState(121);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
@@ -943,7 +955,7 @@ public class gParser extends Parser {
 					setState(119);
 					match(T__15);
 					setState(120);
-					block();
+					((IfStatContext)_localctx).elseBlock = block();
 					}
 					break;
 				}
