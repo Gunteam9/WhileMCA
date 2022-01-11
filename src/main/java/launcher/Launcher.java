@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import printer.PrinterBuilder;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,9 +42,10 @@ public class Launcher {
     }
 
     public static void main(String[] args) {
-        final String fileName = "program1.txt";
-        InputStream inputStream = Launcher.class.getResourceAsStream(fileName);
+        final String fileName = "program2.txt";
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
         ParseTree parseTree = parse(inputStream);
         Program program = buildAst(parseTree);
+        PrinterBuilder.print(program);
     }
 }

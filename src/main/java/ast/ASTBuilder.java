@@ -27,7 +27,7 @@ public class ASTBuilder extends gBaseVisitor<Node> {
 
     @Override
     public Node visitProgram(gParser.ProgramContext ctx) {
-        String identifier = ctx.Identifier().getSymbol().getText();
+        String identifier = ctx.Identifier() != null ? ctx.Identifier().getSymbol().getText() : "";
         List<Declaration> declarations = makeList(ctx.declaration());
         ListDeclVariables listDeclVariables = (ListDeclVariables) ctx.lDeclVariables().accept(this);
         Statements statements = (Statements) ctx.statements().accept(this);
@@ -41,7 +41,7 @@ public class ASTBuilder extends gBaseVisitor<Node> {
         String procIdent = ctx.procIden.getText();
         ListDeclIdent listDeclIdent = (ListDeclIdent) ctx.lDeclIdent().accept(this);
         Type type = (Type) ctx.type().accept(this);
-        String resIdent = ctx.resIdent.getText();
+        String resIdent = ctx.resIdent != null ? ctx.resIdent.getText() : "";
         Statements statements = (Statements) ctx.statements().accept(this);
 
         return new Declaration(position(ctx), procIdent, listDeclIdent, type, resIdent, statements);
@@ -127,7 +127,7 @@ public class ASTBuilder extends gBaseVisitor<Node> {
     public Node visitIfStat(gParser.IfStatContext ctx) {
         Expression expression = (Expression) ctx.bexpression().accept(this);
         Statement thenBlock = (Statement) ctx.thenBlock.accept(this);
-        Statement elseBlock = (Statement) ctx.elseBlock.accept(this);
+        Statement elseBlock =(Statement) ctx.elseBlock.accept(this);
 
         return new IfStat(position(ctx), expression, thenBlock, elseBlock);
     }
@@ -172,7 +172,7 @@ public class ASTBuilder extends gBaseVisitor<Node> {
     @Override
     public Node visitCompaExpr(gParser.CompaExprContext ctx) {
         Expression leftExpression = (Expression) ctx.leftexpr.accept(this);
-        Opa opa = (Opa) ctx.opa().accept(this);
+        OperatorNum opa = (OperatorNum) ctx.opa().accept(this);
         Expression rightExpression = (Expression) ctx.rigthexpr.accept(this);
 
         return new CompaExpr(position(ctx), leftExpression, opa, rightExpression);
@@ -212,7 +212,7 @@ public class ASTBuilder extends gBaseVisitor<Node> {
     @Override
     public Node visitCompExpr(gParser.CompExprContext ctx) {
         Expression leftExpression = (Expression) ctx.leftexpr.accept(this);
-        Opr opr = (Opr) ctx.opr().accept(this);
+        OperatorCompa opr = (OperatorCompa) ctx.opr().accept(this);
         Expression rightExpression = (Expression) ctx.rightexpr.accept(this);
 
         return new CompExpr(position(ctx), leftExpression, opr, rightExpression);
